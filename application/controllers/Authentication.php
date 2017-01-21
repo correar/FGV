@@ -7,6 +7,7 @@ class Authentication extends CI_Controller {
         parent::__construct();
         $this->load->model('auth_model');
         $this->load->helper('url_helper');
+		
     }
 	
 	public function index()

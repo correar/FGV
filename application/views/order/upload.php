@@ -54,17 +54,14 @@ endforeach; ?>
 				echo $info['gramatura']." | ".$info['coloracao']." | ".$info['formato']." | ".$info['lado']; ?>
 			</div>
 			<div class="col-md-3 col-md-offset-6">
-				<?php echo $error;?>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload_file">
+  Launch demo modal
+</button>
 
-				<?php echo form_open_multipart('order/do_upload');?>
 
-				<input type="file" name="userfile" size="20" />
 
-				<br /><br />
-
-				<input type="submit" value="upload" />
-
-				</form>
+				
 			</div>
 		</div>
 	</div>
