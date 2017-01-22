@@ -11,7 +11,10 @@ foreach ($profiles as $profile):
 		$infos[$i]['formato'] = $profile['formato'];
 		$infos[$i]['lado'] = $profile['lado'];
 		$i++;
-endforeach; ?>
+endforeach; 
+//$this->session->unset_userdata('client_name');
+
+?>
 
 
 <div class="row">
@@ -54,13 +57,28 @@ endforeach; ?>
 				echo $info['gramatura']." | ".$info['coloracao']." | ".$info['formato']." | ".$info['lado']; ?>
 			</div>
 			<div class="col-md-3 col-md-offset-6">
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload_file">
-  Launch demo modal
-</button>
-
-
-
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload_file<?php echo $info['tipo']; ?>">
+					Upload
+				</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				
+				<!--<div id="<?php echo $info['tipo']; ?>"></div>-->
+				
+				<?php $client_name = 'client_name'.$info['tipo']; 
+				$cnt = $this->session->cnt;
+				for($k = 1; $k <= $cnt; $k++){
+					$client = $client_name.$k;
+					echo $this->session->$client."<br>";
+				}
+				/*
+				foreach($this->session->all_userdata() as $session=>$svalue ){
+					echo $session." = ".$svalue."<br>";
+				} */ ?>
+				
 				
 			</div>
 		</div>
