@@ -1,11 +1,11 @@
 <?php $i=1;
 foreach ($profiles as $profile):	
         $idperfil = $profile['idperfil']; 
-		$nome = $profile['nome'];
+		$perfil = $profile['nome'];
 		$acabamento = $profile['acabamento'];
 		$sobre = $profile['sobre'];
 		$imagem = $profile['imagem'];
-		$infos[$i]['tipo'] = $profile['tipo'];
+		$infos[$i]['tipo'] = str_replace(' ','_',$profile['tipo']);
 		$infos[$i]['gramatura'] = $profile['gramatura'];
 		$infos[$i]['coloracao'] = $profile['coloracao'];
 		$infos[$i]['formato'] = $profile['formato'];
@@ -29,7 +29,7 @@ endforeach;
 				<div class="row">
 					<div class="col-md-6">
 						<p>
-							<?php echo $info['tipo']; ?>
+							<?php echo  str_replace('_',' ',$info['tipo']) ?>
 							
 						</p>
 						<form id='data<?php echo $info['tipo']; ?>'  enctype="multipart/form-data">
@@ -62,7 +62,7 @@ var frm = '<?php echo $info['tipo']; ?>';
 $("form#data"+frm).submit(function(event){
 		 event.preventDefault();
 		 var cnt = '<?php echo $this->session->cnt; ?>';
-		 		 
+		
 		 if (cnt == ''){
 			 var i = 1;
 		 }else{
@@ -70,13 +70,15 @@ $("form#data"+frm).submit(function(event){
 		 }
 		
 		var _progress = $('#_progress');
-		var result1 = '<?php echo $info['tipo']; ?>';
-		
+		var tipo = '<?php echo $info['tipo']; ?>';
+		var idperfil = '<?php echo $idperfil ?>';
+		var result1 = idperfil+tipo;
 		
 		
 		var file_name = new FormData($(this)[0]);
-		file_name.append('tipo',result1);
+		file_name.append('tipo',tipo);
 		file_name.append('cnt',i);
+		file_name.append('perfil',idperfil);
 		//file_name.append('id', j);
 
 		$.ajax({
@@ -100,7 +102,12 @@ $("form#data"+frm).submit(function(event){
 				else{
 					_progress.animate({width:"100%"}, 100);
 					
-					$("#"+result1).html(result);
+					$("#"+result1).append(result+"<br>");
+					
+					window.setTimeout(function(){
+							location.reload();
+					}, 1000);
+					
 				}
 				
 				

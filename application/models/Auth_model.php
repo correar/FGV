@@ -18,15 +18,6 @@ class Auth_model extends CI_Model {
 		return $query->row_array();
 	}
 	
-	public function auth_session($nome,$categoria)
-	{
-		$data = array(
-			'nome' => $nome,
-			'categoria' => $categoria,
-			'logged_in' => TRUE
-		);
-		
-		$this->session->set_userdata($data);
-	}
+	
 }
 ?>

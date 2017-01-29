@@ -55,7 +55,7 @@
 						</script>
 					</div>
 					<div class="col-md-3">
-						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Sua Lista de pedidos está vazia
+						<!--<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Sua Lista de pedidos está vazia -->
 					</div>
 					<div class="col-md-2">
 						<?php echo $this->session->nome; ?>
@@ -75,6 +75,9 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			  <ul class="nav navbar-nav">
 				<li class="active"><a href="<?php echo site_url(''); ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Início <span class="sr-only">(current)</span></a></li>
+				<?php 
+				if($this->session->categoria == 1){
+				?>
 				<li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Pedidos</a></li>
 				<li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Relatório</a></li>
 				<li class="dropdown">
@@ -86,9 +89,13 @@
 				  </ul>
 				</li>
 				<li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Usuários</a></li>
+				<?php
+				}
+				?>
 			  </ul>
 			  <ul class="nav navbar-nav navbar-right">
 				<li><a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Suporte</a></li>
+				<li><a href="<?php echo site_url('authentication/logout'); ?>" id="sair"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Sair</a></li>
 			  </ul>
 			</div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
