@@ -1,0 +1,2 @@
+AddHandler php55-script .php
+suPHP_ConfigPath /home/boxeprint/public_html/

@@ -6,6 +6,7 @@ class Authentication extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('auth_model');
+		$this->load->model('user_model');
         $this->load->helper('url_helper');
 		$this->load->library('session');
     }
@@ -28,12 +29,10 @@ class Authentication extends CI_Controller {
 		
 		if (($this->form_validation->run() == TRUE) or ($this->session->nome <> '')) 
 		{
-			
 			$this->load->view('templates/header');
 			$this->load->view('templates/menu');
 			$this->load->view('templates/home');
 			$this->load->view('templates/footer');	
-			
 		}
 		else
 		{			
@@ -59,8 +58,22 @@ class Authentication extends CI_Controller {
 		}
 		else
 		{
-			$this->form_validation->set_message('email_check','O Email ou Senha não é valido.');
-			return FALSE;
+			$row = $this->auth_model->nopassword();
+			$password = $row['senha'];
+			if($password == ""){
+				
+				
+				$idUser = $row['iduser'];
+				$nome = $row['nome'];
+				$categoria = $row['fkCategoria'];
+				$this->auth_session($idUser,$nome,$categoria);
+				$this->user_model->update_password();
+				return TRUE;
+			}
+			else{
+				$this->form_validation->set_message('email_check','O Email ou Senha não é valido.');
+				return FALSE;
+			}
 		}
 	
 	}
@@ -80,6 +93,29 @@ class Authentication extends CI_Controller {
 	{
 		$this->session->sess_destroy();
 		$this->load->view('templates/logout');
+	}
+	
+	public function update_password()
+	{
+		$this->load->helper(array('form','url'));
+		
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('password', 'Senha', 'trim|required', array('required'=>'A %s deve ser preenchida.'));
+		
+		if (($this->form_validation->run() == FALSE)){
+				
+				$this->user_model->update_password();
+				
+				
+			
+		}else
+		{
+			$this->load->view('templates/header');
+			$this->load->view('user/password');
+			$this->load->view('templates/footer');
+		}
+		
 	}
 	
 }

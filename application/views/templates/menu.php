@@ -74,7 +74,7 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			  <ul class="nav navbar-nav">
-				<li class="active"><a href="<?php echo site_url(''); ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Início <span class="sr-only">(current)</span></a></li>
+				<li><a href="<?php echo site_url(''); ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Início <span class="sr-only">(current)</span></a></li>
 				<?php 
 				if($this->session->categoria == 1){
 				?>
@@ -88,7 +88,7 @@
 					<li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Gráficos</a></li>
 				  </ul>
 				</li>
-				<li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Usuários</a></li>
+				<li><a href="<?php echo site_url('user/user'); ?>"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Usuários</a></li>
 				<?php
 				}
 				?>
