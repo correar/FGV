@@ -23,6 +23,7 @@ class Order extends CI_Controller {
 		}
 		$data['enderecosEntrega'] = $this->order_model->getall_endereco();
 		$data['error'] = '';
+		
 		$this->load->view('templates/header');
 		$this->load->view('templates/menu');
 		$this->load->view('order/upload',$data);
@@ -33,7 +34,11 @@ class Order extends CI_Controller {
 	
 	public function upload_me()
 	{		
-		$config['upload_path']          = './assets/uploads/';
+		if(!is_dir('./assets/uploads/'.$this->session->iduser)){
+		mkdir('./assets/uploads/'.$this->session->iduser, 0777, true);
+		chmod('./assets/uploads/'.$this->session->iduser, 0777);
+		}
+		$config['upload_path']          = './assets/uploads/'.$this->session->iduser.'/';
         $config['allowed_types']        = 'pdf';
 		$config['max_size']     = '0';
         

@@ -76,10 +76,10 @@
 			  <ul class="nav navbar-nav">
 				<li><a href="<?php echo site_url(''); ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Início <span class="sr-only">(current)</span></a></li>
 				<?php 
-				if($this->session->categoria == 1){
+				if($this->session->categoria <= 2){
 				?>
 				<li><a href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Pedidos</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Relatório</a></li>
+				<li><a href="<?php echo site_url('report/view_report'); ?>"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Relatório</a></li>
 				<li class="dropdown">
 				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Relatórios <span class="caret"></span></a>
 				  <ul class="dropdown-menu">
