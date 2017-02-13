@@ -83,7 +83,8 @@ endforeach;
 				}
 				?>
 				
-				
+				<?php //echo "Total ".$total; ?>
+				<?php //echo "cnt ".$cnt; ?>
 			</div>
 		</div>
 	</div>
@@ -107,7 +108,7 @@ endforeach;
 				<input type="text" class="form-control" id="centroCusto" name="centroCusto" value="<?php echo set_value('CentroCusto'); ?>" placeholder="Centro de Custo">
 			</div>
 			<div class="form-group">
-				<label for="endereco">Endereço</label>
+				<label for="endereco">Endereço de Entrega</label>
 				
 				<select class="form-control" name="endereco" id="endereco">
 					<?php foreach ($enderecosEntrega as $enderecoEntrega):	
@@ -122,7 +123,8 @@ endforeach;
 			<?php echo form_hidden('profile', $nome); 
 			echo form_hidden('idprofile', $idperfil); 
 			$i = 1;
-			foreach ($infos as $info): 
+			foreach ($infos as $info):
+				//echo "i ".$i;
 				$dataInfo = array(
 					"idtipo" => $info['idtipo'],
 					"tipo" => $info['tipo'],
@@ -142,6 +144,7 @@ endforeach;
 					$client = $client_name.$k;
 					if($this->session->$client){
 						$dataInfo['arquivo'.$idperfil.$info['tipo'].$k] = $this->session->$client;
+						//echo "Arquivo ".$idperfil.$info['tipo'].$k." = ".$dataInfo['arquivo'.$idperfil.$info['tipo'].$k]."<br>";
 					}
 					
 				}

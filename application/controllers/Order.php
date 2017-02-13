@@ -113,13 +113,16 @@ class Order extends CI_Controller {
 				"quantidade"=> $this->input->post('quantidade'),
 				"centroCusto"=> $this->input->post('centroCusto'),
 				"endereco" => $this->input->post('endereco'),
-				"total"=> $total
+				"total"=> $total,
+				"cnt"=> $cnt
 				
 			);
+			
 			for($i=1;$i<=$total;$i++){
 				$valor = $this->input->post('dataInfo'.$i);
 				foreach($valor as $a=>$b){
 					$data['info'][$a.$i] = $b;
+					
 				}
 			}
 			
@@ -134,10 +137,96 @@ class Order extends CI_Controller {
 			$this->load->view('templates/menu');
             $this->load->view('order/formsuccess',$data);
 			$this->load->view('templates/footer');
+			
+			  $config = Array(
+				  
+				  'protocol' => 'smtp',
+				  'smtp_host' => 'smtp.boxeprint.com.br',
+				  'smtp_port' => 587,
+				  'smtp_user' => 'fgv@boxeprint.com.br', // change it to yours
+				  'smtp_pass' => 'P3dr0.Luc4s', // change it to yours
+				  'mailtype' => 'html',
+				  'charset' => 'utf-8',
+				  'wordwrap' => FALSE,
+				  'validation' => TRUE,
+				  'newline' => '\r\n'
+				);
+			$this->load->library('email');
+			$this->email->initialize($config); 
+			$this->email->from('fgv@boxeprint.com.br', 'Boxeprint FGV');
+			$this->email->to('rodrigo.tornaciole@gmail.com');
+			//$this->email->cc('another@another-example.com');
+			//$this->email->bcc('them@their-example.com');
+
+			$this->email->subject('Email Test');
+			
+			$message = '<div class="row">';
+			$message .= '<div class="col-md-2 col-md-offset-1">';
+			$message .= '<strong>Emissão:</strong> '.date('d/m/Y');
+			$message .= '</div>';
+			$message .= '<div class="col-md-2 col-md-offset-1">';
+			$message .= '<strong>Pedido:</strong> '.$data['info']['lastpedido'];
+			$message .= '</div>';
+			$message .= '<div class="col-md-2 col-md-offset-1">';
+			$message .= '<strong>Prazo:</strong>';
+			$message .= '</div>';
+			$message .= '<div class="col-md-2">';
+			$message .= '</div>';
+			$message .= '</div>';
+			$message .= '<p></p>';
+			$message .= '<div class="row">';
+			$message .= '<div class="col-md-3 col-md-offset-1">Usuário:</div>';
+			$message .= '<div class="col-md-8">';
+			foreach($data['user'] as $key){
+				$message .= $key['nome']." ".$key['sobrenome']." | ".$key['telefone']." | ".$key['email'];
+			}
+			$message .= '</div></div>';
+			$message .= '<div class="row">';
+			$message .= '<div class="col-md-3 col-md-offset-1">Identificação do Pedido:</div>';
+			$message .= '<div class="col-md-8">'.$data['info']['observacao'].'</div></div>';
+			
+			$dataEntrega = date('d/m/Y',strtotime('+36 hours'));
+			$message .= '<div class="row"><div class="col-md-3 col-md-offset-1">Data Entrega:</div><div class="col-md-8">'.$dataEntrega.'</div><div>';
+			$message .= '<div class="row"><div class="col-md-3 col-md-offset-1">Observações:</div><div class="col-md-8"></div></div>';
+			$message .= '<div class="row"><div class="col-md-3 col-md-offset-1">Endereço pra entrega:</div><div class="col-md-8">';
+			foreach($data['enderecoEntrega'] as $key){
+				$message .= $key['logradouro'].", ".$key['numero'].", ".$key['bairro'];
+			}
+			$message .= '</div></div>';
+			$message .= '<div class="row"><div class="col-md-3 col-md-offset-1">Quantidade:</div>';
+			$message .= '<div class="col-md-8">'.$data['info']['quantidade'].'</div></div>';
+			$message .= '<div class="row"><div class="col-md-3 col-md-offset-1">Centro de Custo:</div>';
+			$message .= '<div class="col-md-8">'.$data['info']['centroCusto'].'</div></div>';
+
+			$total = $data['info']['total'];
+			$cnt = $data['info']['cnt'];
+			for($i=1;$i<=$total;$i++){
+				$tipo = $data['info']['tipo'.$i];
+				$profile = $data['info']['idProfile'];
+				for($j=1;$j<=$cnt;$j++){
+					if($data['info']['arquivo'.$profile.$tipo.$j.$i]<>""){
+						$message .= '<div class="row"><div class="col-md-3 col-md-offset-1">Item</div>';
+						$message .= '<div class="col-md-8">'.$data['info']['tipo'.$i]." | ".$data['info']['coloracao'.$i]." | ".$data['info']['gramatura'.$i]." | ".$data['info']['formato'.$i]." | ".$data['info']['lado'.$i]." | ".$data['info']['arquivo'.$profile.$tipo.$j.$i];
+						$message .= '</div></div>';
+					}
+				}
+			}
+
+			
+			$this->email->message($message);
+
+			if($this->email->send())
+			{
+			  echo 'Email sent.';
+			 }
+			 else
+			{
+			 show_error($this->email->print_debugger());
+			}
         }
 	}
 	
-	
+
 	
 }	
 

@@ -21,7 +21,7 @@ class Report_model extends CI_Model {
 		$this->db->join('gramatura','fkGramatura = idgramatura');
 		$this->db->join('coloracao','fkColoracao = idcoloracao');
 		$this->db->join('lado','fkLado = idlado');
-		$this->db->order_by('idpedido','ASC');
+		$this->db->order_by('idpedido','DESC');
 		if($query = $this->db->get()){  
 			return $query->result_array();
 			

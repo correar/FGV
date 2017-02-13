@@ -9,7 +9,7 @@
 		<strong>Prazo:</strong>
 	</div>
 	<div class="col-md-2">
-	
+		36 horas
 	</div>
 </div>
 <p>
@@ -40,7 +40,7 @@
 		Data Entrega:
 	</div>
 	<div class="col-md-8">
-		
+		<?php echo date('d/m/Y',strtotime("+ 36 hours")); ?>
 	</div>
 </div>
 <div class="row">
@@ -81,9 +81,12 @@
 </div>
 <?php
 $total = $info['total'];
+$cnt = $info['cnt'];
 for($i=1;$i<=$total;$i++){
 	$tipo = $info['tipo'.$i];
 	$profile = $info['idProfile'];
+for($j=1;$j<=$cnt;$j++){
+	if($info['arquivo'.$profile.$tipo.$j.$i]<>""){
 ?>
 
 <div class="row">
@@ -91,11 +94,13 @@ for($i=1;$i<=$total;$i++){
 		Item
 	</div>
 	<div class="col-md-8">
-		<?php echo $info['tipo'.$i]." | ".$info['coloracao'.$i]." | ".$info['gramatura'.$i]." | ".$info['formato'.$i]." | ".$info['lado'.$i]." | ".$info['arquivo'.$profile.$tipo.$i.$i]; ?>
+		<?php echo $info['tipo'.$i]." | ".$info['coloracao'.$i]." | ".$info['gramatura'.$i]." | ".$info['formato'.$i]." | ".$info['lado'.$i]." | ".$info['arquivo'.$profile.$tipo.$j.$i]; ?>
 	</div>
 </div>
 
-<?php	
+<?php
+	}
+}
 }
 ?>
 

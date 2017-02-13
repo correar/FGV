@@ -69,12 +69,16 @@ class Order_model extends CI_Model {
 		foreach($data as $info){
 			$profile = $info['idProfile'];
 			$total = $info['total'];
+			$cnt = $info['cnt'];
+			$dataPedido = date('Y-m-d');
+			$horaPedido = date('H:i:s');
+			$dataEntrega = date('Y-m-d',strtotime('+36 hours'));
 			
 			$pedido = array(
-				'dataPedido' => date('Y-m-d'),
-				'horaPedido' => date('H:i:s'),
+				'dataPedido' => $dataPedido,
+				'horaPedido' => $horaPedido,
 				'identificacao' => '',
-				'dataEntrega' => '',
+				'dataEntrega' => $dataEntrega,
 				'observacao' => $info['observacao'],
 				'fkEnderecoEntrega' => $info['endereco'],
 				'fkUser' => $this->session->iduser
@@ -101,22 +105,26 @@ class Order_model extends CI_Model {
 				}
 			}
 			for($i=1;$i<=$total;$i++){
-				$tipo = $info['tipo'.$i];
-				$idtipo = $info['idtipo'.$i];
-				$item_info = array(
-					'fkItem' => $lastItem,
-					'fkPerfil_idperfil' => $profile,
-					'fkPedido_idpedido' => $lastPedido,
-					'fkTipo' => $idtipo,
-					'fkGramatura' => $info['idgramatura'.$i],
-					'fkColoracao' => $info['idcoloracao'.$i],
-					'fkFormato' => $info['idformato'.$i],
-					'fkLado' => $info['idlado'.$i],
-					'arquivo' => $info['arquivo'.$profile.$tipo.$i.$i]
-					
-				);
-				$this->db->insert('item_info', $item_info);
-				
+				for($j=1;$j<=$cnt;$j++){
+					$tipo = $info['tipo'.$i];
+					$idtipo = $info['idtipo'.$i];
+					if($info['arquivo'.$profile.$tipo.$j.$i]<>""){
+						$item_info = array(
+							'fkItem' => $lastItem,
+							'fkPerfil_idperfil' => $profile,
+							'fkPedido_idpedido' => $lastPedido,
+							'fkTipo' => $idtipo,
+							'ordem' => $j,
+							'fkGramatura' => $info['idgramatura'.$i],
+							'fkColoracao' => $info['idcoloracao'.$i],
+							'fkFormato' => $info['idformato'.$i],
+							'fkLado' => $info['idlado'.$i],
+							'arquivo' => $info['arquivo'.$profile.$tipo.$j.$i]
+							
+						);
+						$this->db->insert('item_info', $item_info);
+					}
+				}
 			}
 			
 		}
